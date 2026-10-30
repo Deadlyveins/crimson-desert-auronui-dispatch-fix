@@ -1,4 +1,0 @@
-These four BAT scripts are now standalone and no longer require _launcher.bat.
-Replace the four existing BAT files in GitHub with these versions.
-After replacing them, delete _launcher.bat from your GitHub repository.
-Do not upload any game saves or personal files.
