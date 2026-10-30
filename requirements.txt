@@ -1,2 +1,2 @@
-cryptography>=42
-lz4>=4
+cryptography>=42.0
+lz4>=4.3

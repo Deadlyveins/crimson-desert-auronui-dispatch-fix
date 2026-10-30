@@ -1,81 +1,125 @@
-# Crimson Desert — Auronui Island Dispatch Fix
+# Crimson Desert: Auronui Island Dispatch Fix
 
-**Unofficial two-stage save-file workaround · v0.4.1-beta · Windows / Steam · Experimental**
+**Latest version: v0.4.6 Beta | Windows / Steam**
 
-> [!CAUTION]
-> **BACK UP YOUR ENTIRE SAVE FOLDER OUTSIDE THE GAME AND STEAM CLOUD BEFORE YOU TRY THIS.**
-> Keep an unmodified backup and any already-working save separate from your test slot.
-> This tool edits save data and can break game progress. It is **not** a general quest fixer.
+An unofficial, free, open-source tool that may help fix the stuck Auronui Island pioneering dispatch in **Crimson Desert: Charting the Unknown**.
 
-## What problem does this target?
+**This is an experimental save-file repair tool. Back up your saves before using it.**
 
-The **Auronui Island Pioneer dispatch** in *Crimson Desert: Charting the Unknown* can become stuck after reaching **100%** with no usable **Complete Mission** action. Another symptom is the UI prompting you to dispatch three Greymanes again even though the operation appears complete; confirming **Dispatch** does nothing (no materials deducted and no countdown).
+## What problem does it fix?
 
-**Use this only if your symptoms match AND the read-only preflight check accepts your save.** A preflight pass indicates a matching known data pattern, **not** proof that your save needs modification.
+This tool is intended for players who are stuck on the Auronui Island pioneering mission. Common symptoms include:
 
-## Status / evidence
+- The dispatch reaches **100%**, but you cannot complete it.
+- The mission says **"Awaiting Completion"**, but no completion option works.
+- You select three Greymanes and confirm the dispatch, but nothing happens.
+- No resources are used and no new construction timer starts.
+- You cannot continue **"Signpost of the Great Ocean"**.
 
-- A two-stage **manual repair was successful on one player's save**, including dispatching the crew, rebuilding the pier, reaching 100%, claiming completion, and completing *Signpost of the Great Ocean*.
-- The two automated stages have been checked against the successful reference modifications at the decrypted-payload level, and save integrity round-trips passed.
-- **The automated two-stage process has not been independently validated across multiple players' saves.** This is a **beta**, not a guaranteed fix.
-- On October 30, 2026, the tester observed that an October 30 game hotfix did not repair their **already-stuck unmodified save**. This says nothing about other saves or later fixes.
-- Tested against **2.04.00-era** game saves; later updates are **unverified**.
+The tool attempts to get the dispatch working again. It does **not** automatically complete the quest or give rewards.
 
-## Prerequisites
+If your dispatch is working normally, **do not use this tool**.
 
-- Windows / Steam edition of Crimson Desert.
-- Python **3.11+** (Python **3.13** tested).
-- Install Python requirements from the unzipped folder with `py -3 -m pip install -r requirements.txt`.
-- Make a manual save while **physically on Auronui Island** and load your test save there. This reflects the successful workflow but is **not a proven technical necessity**.
-- **Close the game completely** before running the tool or replacing any save.
-- Consider temporarily disabling Steam Cloud for this game while testing. Be careful of sync conflicts when enabling it again.
+## Before using the tool
 
-## How to use (two stages)
+Try these steps in the game first:
 
-**Stage 1: From a newly saved copy of an ORIGINAL broken save**
+1. Switch to **Kliff** if you are playing as Damiane or Oongka, then try the dispatch again.
+2. If possible, move any ship away from the Auronui Island pier.
+3. Make sure your problem matches one of the symptoms above.
 
-1. **Back up the entire save folder first**, outside Steam Cloud. Use a **test slot**, not your only save.
-2. Go to Auronui Island, make a fresh manual save, and close Crimson Desert.
-3. Run `Check_Stage1_ONLY.bat` and enter the full path to a **copy** of `save.save` (or drag it onto the batch file).
-4. If the checker refuses it, **stop**. Do not disable the checks.
-5. Run `Run_Stage1_Reset.bat` on that copied save. Type `RESET`.
-6. The program creates a **backup** and a separate `*_AURONUI_STAGE1_*.save`. **It does not overwrite the input.**
-7. Rename **a copy of the generated output** to exactly **`save.save`**, and put it in your **test slot**, replacing only that slot's save. Enable Windows' file extensions so it doesn't become `save.save.save`.
-8. Load that test slot while on Auronui Island. The pier may partially or fully disappear as the dispatch resets.
-9. Try dispatching the three Greymanes. **If the countdown starts and materials are deducted, STOP — do not run Stage 2.** Let the mission finish normally.
+If nothing helps, you can try the repair tool.
 
-**Stage 2: ONLY if Stage 1 reset the visuals, but 'Dispatch' still does nothing**
+## Download and installation
 
-10. Still on Auronui, **create another fresh in-game manual save** from the Stage 1 test state. **Close the game**.
-11. Run `Check_Stage2_ONLY.bat` on a **copy of that NEW in-game save**. This is **not** the original save nor the raw Stage 1 output.
-12. If accepted, run `Run_Stage2_Reactivate.bat`, and enter `REACTIVATE`.
-13. Rename a copy of the generated Stage 2 output to exactly `save.save`; place it in the **test slot** and load it on Auronui Island.
-14. Verify dispatch starts (resources deducted, timer starts), progresses, offers **Complete Mission**, **and completes successfully**.
+1. Go to the **Releases** section of this GitHub repository.
+2. Download **`Auronui_Dispatch_Fix_v0.4.6_beta.zip`** and extract it.
+3. Install **Python 3.11 or newer** if you do not already have it.
+4. Open a terminal in the extracted folder and run:
 
-> [!WARNING]
-> Stage 2's structural checks cannot reliably distinguish **all** healthy active dispatches from broken ones. You must verify in-game that the Stage 1 dispatch confirmation does nothing before attempting Stage 2.
+```powershell
+py -3 -m pip install -r requirements.txt
+```
 
-## What changes?
+You only need to install the Python requirements once.
 
-This is **not** a force-completion mod. It targets a known specific operation record in the save: faction node `1001022`, operation `0xE4BE83E8`, three assigned workers.
+## Back up your saves
 
-- **Stage 1:** Replaces the known stuck operation's **four-byte progress float** with `0`, to revert its construction state.
-- **Stage 2 (only if needed):** Applies the observed **state `0x01`** and localized serialization-layout adjustments from the successful manual experiment to the **in-game re-saved partial-reset state**.
+**Back up your entire save folder before making any changes.** Your Crimson Desert saves are normally under:
 
-The script decrypts, edits and re-encrypts the save. It checks the original save integrity and validates the output by decrypting it again. It creates distinct backup/output files and is designed **not** to overwrite the source file.
+```text
+%LOCALAPPDATA%\Pearl Abyss\CD\save\
+```
 
-## If anything fails
+The exact subfolder may differ. Keep the original files somewhere safe, outside the active save folder. **Use a separate manual save slot for testing.** Do not rely on Steam Cloud as your only backup.
 
-**Stop and restore your saved backup.** Do not repeatedly patch an incompatible file, bypass checks, or edit the only copy of your progress. Don't post personal save files publicly; they may contain account or character information.
+Always **close the game completely** before copying or replacing save files. Give the tool a **copy** of `save.save`, not your only original.
 
-## Security / privacy
+## Step 1: Reset the dispatch
 
-The Python and batch source is readable and included in the repository. The script does **not** connect to a server or upload your files. Dependency installation through `pip` contacts the package index to download Python libraries. No game assets or personal save files are distributed. See [SECURITY.md](SECURITY.md).
+1. Go to **Auronui Island** as Kliff and create a fresh manual save.
+2. Close Crimson Desert completely.
+3. Make a copy of that save's `save.save` file.
+4. Run **`Check_Stage1_ONLY.bat`** and select the copied file. You can drag the file onto the launcher or enter its full path when asked.
+5. If the check passes and your dispatch really is broken, run **`Run_Stage1_Reset.bat`** on the same copy.
+6. Type **`RESET`** when prompted.
+7. The tool creates a new file with a name like `save_AURONUI_STAGE1_*.save`.
+8. Put a copy of that new file into a **separate test save slot** and rename the copy to `save.save`.
+9. Load the test save in the game as Kliff and try dispatching three Greymanes again.
 
-## Reporting outcomes
+**Look for a real restart:** Resources should be deducted and a new timer should begin. The pier looking reset is not enough to confirm success.
 
-Open an Issue with: game version, symptom, whether Stage 1/2 was used, preflight result, whether resources were deducted and a timer began, and whether the quest finished. **Do not attach personal save files or screenshots containing account IDs or local usernames.**
+**If the dispatch works, stop here. You do not need Step 2.**
 
-### Disclaimer
+If Step 1 says the progress counter is already zero and creates no modified save, it has **not** repaired the issue.
 
-Unofficial fan project. Not affiliated with Pearl Abyss, Valve or Steam. Provided **as-is**, without warranty. Use at your own risk.
+## Step 2: Reactivate the dispatch (only if Step 1 did not work)
+
+**Use this only if Step 1 created a modified save, you loaded it in the game, and the dispatch is still broken.**
+
+1. Load the **modified Step 1 save** in Crimson Desert.
+2. While still on Auronui Island, make a **new manual save inside the game**.
+3. Wait for the save to finish, then close the game completely.
+4. Make a copy of this **new in-game save**.
+5. Run **`Check_Stage2_ONLY.bat`** on the new copy.
+6. If the check passes and the dispatch is still broken, run **`Run_Stage2_Reactivate.bat`**.
+7. Type **`REACTIVATE`** when prompted.
+8. Put a copy of the generated Stage 2 save into a separate test slot, rename it to `save.save`, and load it as Kliff.
+9. Try the dispatch again. Check whether resources are consumed, a timer begins, and the quest can eventually be completed.
+
+**Important:** Step 2 must use the **new save made inside the game after loading Step 1**. Do not use your original broken save or the Stage 1 output file directly.
+
+## What's new in v0.4.6 Beta?
+
+- Support for two save formats found during testing.
+- Improved compatibility with saves from different players.
+- Better checks to avoid changing unrecognized saves.
+- Separate launchers for checking and applying each repair stage.
+- Clearer handling of saves where Step 1 has nothing to change.
+
+A previously affected save was repaired manually and the quest was completed in-game. The automated tool has undergone additional testing, but **successful quest completion with v0.4.6 is not guaranteed for every player**.
+
+See [CHANGELOG.md](CHANGELOG.md) for the release history.
+
+## Known limitations
+
+- This only targets the **Auronui Island pioneering dispatch**. It is not a general quest fixer.
+- Some saves may not be supported, especially after future game updates.
+- A successful tool message does not guarantee the mission works in-game.
+- The tool cannot tell for certain whether your quest is broken.
+- Step 2 cannot verify that you followed the in-game resave instructions.
+
+## Feedback and bug reports
+
+If you test the tool, please open a **GitHub Issue** and let us know whether:
+
+- Step 1 passed and worked.
+- Step 2 was needed.
+- The dispatch actually restarted and its timer appeared.
+- You eventually completed **"Signpost of the Great Ocean"**.
+
+Include your game version and any error messages if possible. **Do not publicly share personal save files or account details.**
+
+## Disclaimer and license
+
+This is an unofficial community project and is **not affiliated with Pearl Abyss**. It is provided as-is under the **MIT License**, without warranty. Editing game saves carries risks, so keep your original backups.

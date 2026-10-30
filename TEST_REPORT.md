@@ -1,24 +1,15 @@
-# Test report (2026-10-30)
+# Testing notes for v0.4.6 Beta
 
-```text
-TEST REPORT - v0.4.1 / Oct 30, 2026
-==================================
-Performed on consenting tester-provided saves. No actual saves are distributed.
-PASS: Stage 1 preflight identifies affected original node and op signature.
-PASS: Stage 2 preflight identifies the eligible partially reset state.
-PASS: Stage 1 output decompressed payload EXACTLY equals prior manually
-      reset save after setting the intended four-byte float to 0.
-PASS: Stage 2 output decompressed payload EXACTLY equals prior manual
-      REACTIVATE_state1 Test A output when using its reference input.
-PASS: Both encrypted outputs decode and verify against intended content.
-PASS: Stage 2 rejects the untouched original stuck save.
-PASS: Stage 1 rejects an already reset save.
-PASS: No personal save files included in public archive.
+## What has been observed
 
-IN GAME: one tester completed the mission with manual two-stage workflow.
-NOT TESTED: multiple independent testers or all later game versions.
-For accurate reporting, do not equate valid decryption with in-game success.
+- A previously affected save was recovered through manual save modifications. The Auronui pier could be rebuilt and "Signpost of the Great Ocean" was completed in-game.
+- Save files from multiple players showed two different Auronui operation layouts. The v0.4.6 tool supports both observed layouts.
+- Structural checks and the repair steps have been tested against these observed save formats.
 
-```
+## What is not confirmed
 
-**Note:** The successful end-to-end quest completion was observed using the manual procedure on one save. Reproduction across separate users remains unverified.
+- Full quest completion using this exact packaged v0.4.6 Beta release for every affected player.
+- Compatibility with every game update or save variation.
+- Whether the mission is broken based only on a progress number or a successful preflight check.
+
+Please report the game version, the check or repair stage used, whether the dispatch started, whether the timer appeared, and whether the quest could be finished. Do not publicly share save files containing private player information.

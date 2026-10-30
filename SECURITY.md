@@ -1,9 +1,17 @@
-# Security and save-data privacy
+# Save safety and privacy
 
-- **Back up your entire save directory to a different physical location or folder before testing.** A test slot alone is not a guaranteed backup, and Steam Cloud can synchronize mistakes.
-- Work on a **copy** of `save.save`, never your only save. Close the game before swapping files.
-- Do not upload saves to a public issue or Reddit post; they may contain identifying information.
-- Treat an unexpected structural match/failure as a reason to stop, not a reason to bypass the checks.
-- Inspect `auronui_reset.py` and `.bat` launchers before executing them. This tool does not implement networking; `pip` only retrieves dependencies when you explicitly install them.
-- This is an independent research workaround. Unexpected save versions, partially repaired states or later patches may be incompatible.
-- If you suspect a defect in the fixer, open a GitHub issue with non-sensitive error output and game version. Do not post private files publicly.
+This is an experimental tool that modifies Crimson Desert save files. Use it carefully.
+
+- **Back up your entire save directory** outside the game folder before using the tool.
+- Work with a copy of `save.save`, not your only original.
+- Use a separate save slot when testing repaired files.
+- Close the game completely before replacing any files.
+- Do not rely on Steam Cloud as your only backup.
+- Only use the repair if the Auronui dispatch is genuinely stuck.
+- Do not use Stage 2 unless you loaded your repaired Stage 1 save, made a new manual save inside the game, and then exited.
+- A successful check or a visually reset pier does not guarantee the mission is fixed.
+- Do not upload personal save files or account details to public GitHub Issues.
+
+The tool does not overwrite the input save. For successful repairs it creates a separate output file and a timestamped backup. The script itself does not send your saves anywhere. Installing Python packages with `pip` is a separate step that may use the internet.
+
+The project is unofficial, experimental, and provided without warranty.
