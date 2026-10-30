@@ -1,0 +1,2 @@
+cryptography>=42
+lz4>=4
